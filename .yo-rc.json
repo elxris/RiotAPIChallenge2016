@@ -1,0 +1,14 @@
+{
+  "generator-kraken": {
+    "taskModule": "grunt",
+    "lintModule": "eslint",
+    "description": "Riot API Challenge 2016",
+    "author": "Kids",
+    "templateModule": false,
+    "i18n": false,
+    "componentPackager": false,
+    "cssModule": "less",
+    "jsModule": false,
+    "useJson": null
+  }
+}
