@@ -29,6 +29,7 @@
   },
   "riotApiKey": "env:RIOTAPI",
   "baseRiotUrl": ".api.pvp.net",
+  "redisMemory": 256,
   "middleware": {
     "static": {
       "module": {
