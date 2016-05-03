@@ -22,7 +22,7 @@ module.exports = function() {
           'CAP_5x5'].indexOf(value.subType) >= 0
         ) {
           value.fellowPlayers.forEach(function(player) {
-            addPlayer(player.summonerId, /*toLeague?*/ true);
+            addPlayer(region, player.summonerId, /*toLeague?*/ true);
           });
           redis.sadd('games', region + ':' + value.gameId)
           .then(function(count) {
