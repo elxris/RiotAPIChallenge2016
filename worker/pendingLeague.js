@@ -26,6 +26,11 @@ module.exports = function() {
           });
         }
       });
+    }).catch(function(err) {
+      if (err.statusCode !== 404) {
+        redis.sadd('pending:league', value);
+      }
+      console.error(err.body);
     });
   })
   .catch(function(err) {

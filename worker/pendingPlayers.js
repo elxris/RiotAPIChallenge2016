@@ -7,15 +7,6 @@ var addPlayer = require('./lib/addPlayer');
 
 module.exports = function() {
   return redis.pipeline()
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
-    .spop('pending:players')
     .spop('pending:players').exec()
   .then(function(values) {
     var count = 0;
@@ -47,6 +38,13 @@ module.exports = function() {
               }
             });
           });
+        }).catch(function(err) {
+          if (err.statusCode !== 404) {
+            values.forEach(function([err, val]) {
+              redis.sadd('pending:players', val);
+            });
+          }
+          console.error(err.body);
         });
       }
     });

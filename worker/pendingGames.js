@@ -93,7 +93,10 @@ module.exports = function() {
       });
     })
     .catch(function(err) {
-      console.error(err);
+      if (err.statusCode !== 404) {
+        redis.sadd('pending:games', value);
+      }
+      console.error(err.body);
     });
   })
   .catch(function(err) {
