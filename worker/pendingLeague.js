@@ -14,7 +14,7 @@ module.exports = function() {
     }
     var [region, summoner] = value.split(':');
     console.log('Getting leagues ' + region + ' of ' + summoner);
-    return api.league(region, summoner).then(function(result) {
+    return api.league(region, summoner).then(function({body:result}) {
       var leagues = result[summoner];
       leagues.forEach(function(league) {
         if (league.queue === 'RANKED_SOLO_5x5') {

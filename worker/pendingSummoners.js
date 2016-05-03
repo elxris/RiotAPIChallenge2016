@@ -14,7 +14,7 @@ module.exports = function() {
     }
     var [region, summoner] = value.split(':');
     console.log('Getting games on ' + region + ' for ' + summoner);
-    return api.recent(region, summoner).then(function(result) {
+    return api.recent(region, summoner).then(function({body:result}) {
       result.games.forEach(function(value) {
         if (
           value.gameMode === 'CLASSIC' && value.gameType === 'MATCHED_GAME' &&

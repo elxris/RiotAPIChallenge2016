@@ -36,7 +36,7 @@ module.exports = function() {
     Object.keys(players).forEach(function(region) {
       var _players = players[region].join(',');
       if (_players.length) {
-        api.summoner(region, _players).then(function(players) {
+        api.summoner(region, _players).then(function({body:players}) {
           Object.keys(players).forEach(function(name) {
             redis.hsetnx('summonernames', region + ':' + name, players[name].id);
             redis.exists('cached:' + region + ':' + players[name].id + ':games')

@@ -34,7 +34,7 @@ module.exports = function() {
     }
     var [region, matchId] = value.split(':');
     return api.match(region, matchId)
-    .then(function(game) {
+    .then(function({body:game}) {
       game.participants.forEach(function(player) {
         var promise;
         if (game.participantIdentities[0].player) { //Has summonerId
