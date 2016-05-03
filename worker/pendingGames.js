@@ -40,9 +40,11 @@ module.exports = function() {
       game.participants.forEach(function(player) {
         var promise;
         if (game.participantIdentities[0].player) { //Has summonerId
-          var {summonerId} = game.participantIdentities.find(function(id) {
-            return id.participantId === player.participantId;
-          });
+          var {summonerId} = (game.participantIdentities.find(
+            function(id) {
+              return id.participantId === player.participantId;
+            }
+          ) || {}).player;
           promise = redis.get('cached:' + region + ':' + summonerId + ':league')
           .then(function(league) {
             return league;
