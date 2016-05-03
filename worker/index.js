@@ -13,5 +13,5 @@ module.exports = {
   interval: setInterval(function() {
     var pendingPlayers = require('./pendingPlayers');
     pendingPlayers();
-  }, 1000)
+  }, 1100)
 };
