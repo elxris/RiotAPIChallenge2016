@@ -28,11 +28,6 @@
     "TR": "TR1"
   },
   "riotApiKey": "env:RIOTAPI",
-  "requestDefaults": {
-    "qs": {
-      "api_key": "config:riotApiKey"
-    }
-  },
   "baseRiotUrl": ".api.pvp.net",
   "middleware": {
     "static": {
