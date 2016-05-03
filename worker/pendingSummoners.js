@@ -21,12 +21,12 @@ module.exports = function() {
           ['NORMAL', 'RANKED_SOLO_5x5', 'RANKED_PREMADE_5x5', 'RANKED_TEAM_5x5',
           'CAP_5x5'].indexOf(value.subType) >= 0
         ) {
-          value.fellowPlayers.forEach(function(player) {
-            addPlayer(region, player.summonerId, /*toLeague?*/ true);
-          });
           redis.sadd('games', region + ':' + value.gameId)
           .then(function(count) {
             if (count) {
+              value.fellowPlayers.forEach(function(player) {
+                addPlayer(region, player.summonerId, /*toLeague?*/ true);
+              });
               redis.sadd('pending:games', region + ':' + value.gameId);
             }
           });
