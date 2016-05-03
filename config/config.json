@@ -1,5 +1,39 @@
 {
   "specialization": {},
+  "redis": {},
+  "regions": [
+    "BR",
+    "EUNE",
+    "EUW",
+    "JP",
+    "KR",
+    "LAN",
+    "LAS",
+    "NA",
+    "OCE",
+    "RU",
+    "TR"
+  ],
+  "platform": {
+    "BR": "BR1",
+    "EUNE": "EUN1",
+    "EUW": "EUW1",
+    "JP": "JP1",
+    "KR": "KR",
+    "LAN": "LA1",
+    "LAS": "LA2",
+    "NA": "NA1",
+    "OCE": "OC1",
+    "RU": "RU",
+    "TR": "TR1"
+  },
+  "riotApiKey": "env:RIOTAPI",
+  "requestDefaults": {
+    "qs": {
+      "api_key": "config:riotApiKey"
+    }
+  },
+  "baseRiotUrl": ".api.pvp.net",
   "middleware": {
     "static": {
       "module": {
