@@ -1,7 +1,6 @@
 'use strict';
 
 var {app, redis, api} = require('./.');
-var pendingSummoners = require('./pendingSummoners');
 
 module.exports = function() {
   return redis.srandmember('summoners')
@@ -12,7 +11,7 @@ module.exports = function() {
     }
     console.log('Re-añadiendo elementos a la lista.');
     return redis.sadd('pending:summoners', value).then(function() {
-      return pendingSummoners();
+      return require('./pendingSummoners')();
     });
   })
   .catch(function(err) {
