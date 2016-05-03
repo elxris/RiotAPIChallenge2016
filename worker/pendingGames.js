@@ -52,11 +52,11 @@ module.exports = function() {
         }
         promise.then(function(league) {
           league = league || player.highestAchievedSeasonTier;
-          var vs = game.participants.find(function(p) {
-            return (p.teamID != player.teamID) &&
+          var vs = (game.participants.find(function(p) {
+            return (p.teamId != player.teamId) &&
                     (p.timeline.line === player.timeline.line) &&
                     (p.timeline.role === player.timeline.role);
-          }) || {};
+          })) || {};
           addData(region, matchId, league,
             player.timeline.lane, player.timeline.role,
             'damageDealt', player.stats.totalDamageDealtToChampions,

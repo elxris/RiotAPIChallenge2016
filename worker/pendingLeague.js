@@ -29,6 +29,9 @@ module.exports = function() {
     }).catch(function(err) {
       if (err.statusCode !== 404) {
         redis.sadd('pending:league', value);
+      } else {
+        redis.set('cached:' + value + ':league',
+          'UNRANKED', 'EX', /*2 days*/ 172800);
       }
       console.error(err.body);
     });
