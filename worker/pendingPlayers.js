@@ -2,8 +2,8 @@
 
 var {app, redis, api} = require('./.');
 
-var pendingSummoners = require('../pendingSummoners');
-var addPlayer = require('../lib/addPlayer');
+var pendingSummoners = require('./pendingSummoners');
+var addPlayer = require('./lib/addPlayer');
 
 module.exports = function() {
   return redis.pipeline()

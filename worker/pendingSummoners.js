@@ -2,8 +2,8 @@
 
 var {app, redis, api} = require('./.');
 
-var pendingLeague = require('../pendingLeague');
-var addPlayer = require('../lib/addPlayer');
+var pendingLeague = require('./pendingLeague');
+var addPlayer = require('./lib/addPlayer');
 
 module.exports = function() {
   return redis.spop('pending:summoners')
