@@ -26,7 +26,7 @@ module.exports = function() {
       }
       if (val) {
         count++;
-        var [region, name] = val;
+        var [region, name] = val.split(':');
         (players[region] = players[region] || []).push(name);
       }
     });
