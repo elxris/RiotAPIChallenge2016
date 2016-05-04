@@ -9,8 +9,6 @@ var addData = function(
   role, key, score, champ, vsChamp
 ) {
   if (vsChamp) {
-    champ = Math.min(champ, vsChamp);
-    vsChamp = Math.max(champ, vsChamp);
     redis.zadd(
       ['data', league, lane, role, key, champ, 'vs', vsChamp].join(':'),
       score, region + ':' + matchId
