@@ -30,6 +30,9 @@
   "riotApiKey": "env:RIOTAPI",
   "baseRiotUrl": ".api.pvp.net",
   "redisMemory": 256,
+  "express": {
+    "view engine": "jade"
+  },
   "middleware": {
     "static": {
       "module": {

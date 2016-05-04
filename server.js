@@ -15,5 +15,7 @@ server.on('listening', function() {
   console.log('Server listening on http://localhost:%d', this.address().port);
 });
 app.on('start', function() {
-  var worker = require('./worker');
+  if (!process.env.NOFARM) {
+    var worker = require('./worker');
+  }
 });

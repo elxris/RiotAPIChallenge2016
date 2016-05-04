@@ -29,7 +29,10 @@ module.exports = function() {
       if (_players.length) {
         api.summoner(region, _players).then(function({body:players}) {
           Object.keys(players).forEach(function(name) {
-            redis.hsetnx('summonernames', region + ':' + name, players[name].id);
+            redis.publish('ready:players',
+              players[name].id + ':' + players[name].profileIconId);
+            redis.hsetnx('summonernames', region + ':' + name,
+              players[name].id + ':' + players[name].profileIconId);
             redis.exists('cached:' + region + ':' + players[name].id + ':games')
             .then(function(exist) {
               if (!exist) {
