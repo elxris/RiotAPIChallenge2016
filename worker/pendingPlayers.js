@@ -43,10 +43,13 @@ module.exports = function() {
           });
         }).catch(function(err) {
           if (err.statusCode !== 404) {
-            values.forEach(function([err, val]) {
+            return values.forEach(function([err, val]) {
               redis.sadd('pending:players', val);
             });
           }
+          Object.keys(players).forEach(function(name) {
+            redis.publish('ready:players:' + players[name].name, 'false');
+          });
           console.error(err.body);
         });
       }

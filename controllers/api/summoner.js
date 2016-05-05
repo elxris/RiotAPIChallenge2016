@@ -14,6 +14,9 @@ module.exports = function(router) {
             redis.subscribe('ready:players:' + req.body.name,
               function(err, count) {
                 redis.on('message', function(ch, val) {
+                  if (!val || val === 'false') {
+                    return res.statusCode(404).end();
+                  }
                   respond(val);
                 });
               }
