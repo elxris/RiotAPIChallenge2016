@@ -1,3 +1,5 @@
+include mixing
+
 doctype html
 head
   title LoL Trainer
@@ -7,17 +9,31 @@ head
   link(rel="stylesheet" href="/css/app.css")
   meta(name="viewport" content="width=device-width, initial-scale=1.0")
 body.grey-text.text-lighten-4.blue-grey.lighten-4
-  .row.indigo.darken-5(style="margin-bottom: 0;").indigo
+  #app.row.indigo.darken-5(style="margin-bottom: 0;").indigo
     .col.s12.m4.indigo.darken-3.sidebar
       .container.padding-5vh.center-align: .row
         .col.s12
-          img.circle.responsive-img.z-depth-3.margin-1em(src="http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/588.png")
-        .col.s12.waves-effect.waves-light.margin-1em
-          p.flow-text Menú #1
-        .col.s12.waves-effect.waves-light.margin-1em
-          p.flow-text Menú #2
-        .col.s12.waves-effect.waves-light.margin-1em
-          p.flow-text Menú #3
+          .row
+            .col.s12.left-align.margin-1em
+              label.indigo-text.text-lighten-4 Region
+              select.browser-default.indigo(v-model='region' debounce='999')
+                option(value='', disabled v-bind:selected="!region") Region
+                option(v-for="r in regions" v-bind:value='r' v-bind:selected="region === r") {{r}}
+            .input-field.col.s12.margin-1em
+              input#first_name(type='text' v-model='name' debounce='999')
+              label.indigo-text.text-lighten-4(for='first_name') Summoner Name
+        .row(v-if='userData && name && region')
+          .col.s12.margin-1em
+            img.circle.responsive-img.z-depth-3(src="http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/588.png")
+          .col.s12.waves-effect.waves-light.margin-1em
+            p.flow-text Menú #1
+          .col.s12.waves-effect.waves-light.margin-1em
+            p.flow-text Menú #2
+          .col.s12.waves-effect.waves-light.margin-1em
+            p.flow-text Menú #3
+        .col.s12(v-else)
+          +loader
+
     .col.s12.m8
       .container.padding-5vh
         .card
@@ -36,3 +52,40 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
       edge: 'right', // Choose the horizontal origin
     });
     $('.collapsible').collapsible();
+    new Vue({
+      el: '#app',
+      data: {
+        name: '',
+        region: '',
+        regions: ["BR","EUNE","EUW","JP","KR","LAN","LAS","NA","OCE","RU","TR"],
+        userData: ''
+      },
+      watch: {
+        'region': function(val) {
+          console.log(val);
+          localStorage.setItem("region", val);
+          this.obtainData();
+        },
+        'name': function(val) {
+          console.log(val);
+          localStorage.setItem("name", val);
+          this.obtainData();
+        }
+      },
+      created: function() {
+        this.region = localStorage.getItem("region");
+        this.name   = localStorage.getItem("name");
+      },
+      methods: {
+        obtainData: function() {
+          if(this.region && this.name) {
+            $.post('/api/summoner', {name: this.name, region: this.region}, 
+              function(data) {
+                this.userData = data;
+                console.log(data);
+              }
+            );
+          }
+        }
+      }
+    });

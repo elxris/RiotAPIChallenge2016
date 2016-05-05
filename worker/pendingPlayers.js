@@ -29,7 +29,7 @@ module.exports = function() {
       if (_players.length) {
         api.summoner(region, _players).then(function({body:players}) {
           Object.keys(players).forEach(function(name) {
-            redis.publish('ready:players',
+            redis.publish('ready:players:' + name,
               players[name].id + ':' + players[name].profileIconId);
             redis.hsetnx('summonernames', region + ':' + name,
               players[name].id + ':' + players[name].profileIconId);
