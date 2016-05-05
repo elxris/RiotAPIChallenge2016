@@ -49,7 +49,7 @@ module.exports = function() {
           }
           Object.keys(players).forEach(function(region) {
             Object.keys(players[region]).forEach(function(player) {
-              redis.publish('ready:players:' + player, 'false');
+              redis.publish('ready:players:' + players[region][player],'false');
             });
           });
           console.error(err.body);
