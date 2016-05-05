@@ -48,8 +48,8 @@ module.exports = function() {
             });
           }
           Object.keys(players).forEach(function(region) {
-            Object.keys(players[region]).forEach(function(players) {
-              redis.publish('ready:players:' + players[0], 'false');
+            Object.keys(players[region]).forEach(function(player) {
+              redis.publish('ready:players:' + player, 'false');
             });
           });
           console.error(err.body);
