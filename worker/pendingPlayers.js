@@ -29,7 +29,7 @@ module.exports = function() {
       if (_players.length) {
         api.summoner(region, _players).then(function({body:players}) {
           Object.keys(players).forEach(function(name) {
-            redis.publish('ready:players:' + players[name].name,
+            redis.publish('ready:players:' + _players,
               players[name].id + ':' + players[name].profileIconId);
             redis.hsetnx('summonernames', region + ':' + players[name].name,
               players[name].id + ':' + players[name].profileIconId);
@@ -47,11 +47,7 @@ module.exports = function() {
               redis.sadd('pending:players', val);
             });
           }
-          Object.keys(players).forEach(function(region) {
-            Object.keys(players[region]).forEach(function(player) {
-              redis.publish('ready:players:' + players[region][player],'false');
-            });
-          });
+          redis.publish('ready:players:' + _players,'false');
           console.error(err.body);
         });
       }
