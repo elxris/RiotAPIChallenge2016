@@ -31,7 +31,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
             p.flow-text Menú #2
           .col.s12.waves-effect.waves-light.margin-1em
             p.flow-text Menú #3
-        .col.s12(v-else)
+        .col.s12(v-if='!userData && name && region')
           +loader
 
     .col.s12.m8

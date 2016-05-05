@@ -49,6 +49,9 @@
           }
         ]
       }
+    },
+    "appsec": {
+      "enabled": false
     }
   }
 }

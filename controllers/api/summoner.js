@@ -4,7 +4,7 @@ var Redis = require('ioredis');
 
 module.exports = function(router) {
 
-  router.get('/', function(req, res) {
+  router.post('/', function(req, res) {
     var redis = req.redis = new Redis();
     redis.hget('summonernames', req.body.region + ':' + req.body.name).then(
       function(value) {
