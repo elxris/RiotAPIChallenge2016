@@ -13,7 +13,7 @@ module.exports = function(router) {
           .then(function() {
             redis.subscribe('ready:players:' + req.body.name,
               function(err, count) {
-                redis.on('ready:players:' + req.body.name, function(val) {
+                redis.on('message', function(ch, val) {
                   respond(val);
                 });
               }
