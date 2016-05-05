@@ -93,7 +93,7 @@ module.exports = function() {
       });
     })
     .catch(function(err) {
-      if (err.statusCode !== 404 || err.statusCode !== 400) {
+      if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:games', value);
       }
       console.error(err.body);

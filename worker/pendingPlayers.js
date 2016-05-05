@@ -42,7 +42,7 @@ module.exports = function() {
             });
           });
         }).catch(function(err) {
-          if (err.statusCode !== 404 || err.statusCode !== 400) {
+          if (err.statusCode !== 404 && err.statusCode !== 400) {
             return values.forEach(function([err, val]) {
               redis.sadd('pending:players', val);
             });
