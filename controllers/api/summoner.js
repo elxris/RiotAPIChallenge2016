@@ -10,6 +10,8 @@ module.exports = function(router) {
       function(value) {
         if (!value) {
           return redis.subscribe('ready:players', function(err, count) {
+            redis.sadd('pending:players',
+              req.body.region + ':' + req.body.name);
             redis.on('ready:players:' + req.body.name, function(val) {
               respond(val);
             });
