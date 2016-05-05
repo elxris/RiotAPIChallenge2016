@@ -9,15 +9,15 @@ module.exports = function(router) {
     redis.hget('summonernames', req.body.region + ':' + req.body.name).then(
       function(value) {
         if (!value) {
-          return redis.subscribe('ready:players:' + req.body.name,
+          redis.pipeline()
+          .sadd('pending:players', req.body.region + ':' + req.body.name)
+          .subscribe('ready:players:' + req.body.name,
             function(err, count) {
-              redis.sadd('pending:players',
-                req.body.region + ':' + req.body.name);
               redis.on('ready:players:' + req.body.name, function(val) {
                 respond(val);
               });
             }
-          );
+          ).exec();
         }
         return respond(value);
         function respond(value) {
