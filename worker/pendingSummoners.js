@@ -35,7 +35,7 @@ module.exports = function() {
       redis.set('cached:' + region + ':' + summoner + ':games', '1',
         'EX', /*30 minutes*/ 1800);
     }).catch(function(err) {
-      if (err.statusCode !== 404) {
+      if (err.statusCode !== 404 || err.statusCode !== 400) {
         redis.sadd('pending:summoners', value);
       }
       console.error(err.body);

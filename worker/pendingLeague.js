@@ -27,7 +27,7 @@ module.exports = function() {
         }
       });
     }).catch(function(err) {
-      if (err.statusCode !== 404) {
+      if (err.statusCode !== 404 || err.statusCode !== 400) {
         redis.sadd('pending:league', value);
       } else {
         redis.set('cached:' + value + ':league',
