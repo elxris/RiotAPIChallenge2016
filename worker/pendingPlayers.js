@@ -47,8 +47,10 @@ module.exports = function() {
               redis.sadd('pending:players', val);
             });
           }
-          Object.keys(players).forEach(function(name) {
-            redis.publish('ready:players:' + players[name].name, 'false');
+          Object.keys(players).forEach(function(region) {
+            Object.keys(players[region]).forEach(function(players) {
+              redis.publish('ready:players:' + players[0], 'false');
+            });
           });
           console.error(err.body);
         });
