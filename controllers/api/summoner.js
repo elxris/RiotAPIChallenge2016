@@ -15,7 +15,7 @@ module.exports = function(router) {
               function(err, count) {
                 redis.on('message', function(ch, val) {
                   if (!val || val === 'false') {
-                    return res.statusCode(404).end();
+                    return res.status(404).end();
                   }
                   respond(val);
                 });
