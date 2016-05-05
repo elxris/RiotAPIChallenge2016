@@ -24,7 +24,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
               label.indigo-text.text-lighten-4(for='first_name') Summoner Name
         .row(v-if='userData && name && region')
           .col.s12.margin-1em
-            img.circle.responsive-img.z-depth-3(src="http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/588.png")
+            img.circle.responsive-img.z-depth-3(v-bind:src="profileIcon")
           .col.s12.waves-effect.waves-light.margin-1em
             p.flow-text Menú #1
           .col.s12.waves-effect.waves-light.margin-1em
@@ -60,6 +60,12 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
         regions: ["BR","EUNE","EUW","JP","KR","LAN","LAS","NA","OCE","RU","TR"],
         userData: ''
       },
+      computed: {
+        profileIcon: function( ) {
+          var base = 'http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/';
+          return base + (this.userData.profileIconId || 588) + '.png'
+        }
+      }
       watch: {
         'region': function(val) {
           console.log(val);
@@ -78,10 +84,11 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
       },
       methods: {
         obtainData: function() {
+          var self = this;
           if(this.region && this.name) {
             $.post('/api/summoner', {name: this.name, region: this.region}, 
               function(data) {
-                this.userData = data;
+                self.userData = data;
                 console.log(data);
               }
             );
