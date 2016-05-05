@@ -1,6 +1,6 @@
 'use strict';
 
-var Redis = require('ioRedis');
+var Redis = require('ioredis');
 
 module.exports = function(router) {
 
