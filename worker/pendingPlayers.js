@@ -31,7 +31,7 @@ module.exports = function() {
           Object.keys(players).forEach(function(name) {
             redis.publish('ready:players:' + players[name].name,
               players[name].id + ':' + players[name].profileIconId);
-            redis.hsetnx('summonernames', region + ':' + name,
+            redis.hsetnx('summonernames', region + ':' + players[name].name,
               players[name].id + ':' + players[name].profileIconId);
             redis.exists('cached:' + region + ':' + players[name].id + ':games')
             .then(function(exist) {
