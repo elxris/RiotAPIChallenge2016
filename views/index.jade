@@ -87,7 +87,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
           var self = this;
           if(this.region && this.name) {
             self.userData = '';
-            $.post('/api/summoner', {name: this.name, region: this.region}, 
+            $.post('/api/summoner', {name: this.name.trim(), region: this.region}, 
               function(data) {
                 self.userData = data;
                 console.log(data);

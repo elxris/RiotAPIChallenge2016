@@ -9,7 +9,7 @@ module.exports = function(router) {
     redis.hget('summonernames', req.body.region + ':' + req.body.name).then(
       function(value) {
         if (!value) {
-          redis.sadd('pending:players', req.body.region + ':' + req.body.name)
+          return redis.sadd('pending:players', req.body.region + ':' + req.body.name)
           .then(function() {
             redis.subscribe('ready:players:' + req.body.name,
               function(err, count) {
