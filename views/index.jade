@@ -89,8 +89,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
             self.userData = '';
             $.post('/api/summoner',
               {
-                name: this.name.split(/\s/g).join('').split(/\W/)
-                  .join('').toLowerCase(),
+                name: this.name.split(/\s/g).join('').toLowerCase(),
                 region: this.region
               }, 
               function(data) {
