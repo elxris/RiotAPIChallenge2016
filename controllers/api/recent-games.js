@@ -10,13 +10,14 @@ module.exports = function(router) {
     var redis = req.redis = new Redis();
     var _tier;
     redis.pipeline()
-         .hget('cached:leagues', function(err, data) {
-           data = data || '';
-           var [, tier, date] = data.split(/(.+):/);
-           _tier = tier;
-         })
+         .hget('cached:leagues', req.body.region + ':' + req.body.summoner,
+               function(err, data) {
+                 data = data || '';
+                 var [, tier, date] = data.split(/(.+):/);
+                 _tier = tier;
+               })
          .hget('cached:recentGames',
-               req.body.region + ':' + req.body.e,
+               req.body.region + ':' + req.body.summoner,
                function(err, data) {
                  data = data || '';
                  var [, games, time] = data.split(/(.+):/);
