@@ -56,10 +56,27 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
             img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
             span.card-title {{champions[game.championId].name}}
           .card-content.center-align
-            h3.flow-text
-              | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
-            h3.flow-text
-              | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
+            h3(v-if="!game.valid")
+              h3.flow-text Unfortunately this game type is not supported
+            div(v-else)
+              template(v-for="stat in game.keyStats"): .row
+                .col.s4
+                  {{ $key === 'damageDealt' ? 'Damage' : 
+                    ($key === 'damageTaken' ? 'Tank' : 
+                    ($key === 'gold' ? 'Gold' : 
+                    ($key === 'minionsKilled' ? 'Minions' : 
+                    ($key === 'wardsPlaced' ? 'Wards' : 
+                    ($key === 'kills' ? 'Kills' : 
+                    ($key === 'deaths' ? 'Deaths' : 
+                    ($key === 'assists' ? 'Assists')))))))
+                  }}
+                .col.s8
+                  .progress
+                    .determinate(v-bind:class="{width: stat.actual + '%'}")
+              h3.flow-text
+                | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
+              h3.flow-text
+                | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
     
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
