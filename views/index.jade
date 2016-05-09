@@ -49,7 +49,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
     .col.s12.m8(v-if='screenStage === \'recentGames\' && !recentGames')
       .container.padding-5vh: .card: .card-content: +loader
     
-    recent-game(v-for='game in recentGames' game='game')
+    recent-game(v-for='game in recentGames' v-bind:game='game')
     
     script(type='text/x-template' id='recent-game-template')
     
