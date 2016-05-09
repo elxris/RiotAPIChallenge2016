@@ -15,6 +15,8 @@ new Vue({
     regions: ['BR','EUNE','EUW','JP','KR','LAN','LAS','NA','OCE','RU','TR'],
     userData: '',
     recentGames: '',
+    screenStage: 'start',
+    champions: champions,
     actionCount: 0
   },
   computed: {
@@ -55,15 +57,18 @@ new Vue({
           },
           function(data) {
             self.userData = data;
+            self.recentGames = '';
             console.log(data);
           }
         ).fail(function() {
           self.userData = '';
+          self.screenStage = 'main';
         });
       }
     },
     loadRecentGames: function() {
       if (this.region && this.userData.summonerId) {
+        self.screenStage = 'recentGames';
         self.recentGames = '';
         $.post('/api/recent-games',
           {
@@ -71,13 +76,22 @@ new Vue({
             region: this.region
           },
           function(data) {
-            self.recentGames = data;
-            console.log(data);
+            self.recentGames = JSON.parse(data);
+            console.log(self.recentGames);
           }
         ).fail(function() {
           self.recentGames = '';
         });
       }
     }
+  }
+});
+
+Vue.component('recent-game', {
+  template: '#recent-game-template',
+  props: {
+    game: Object
+  },
+  computed: {
   }
 });

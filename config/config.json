@@ -27,6 +27,8 @@
     "RU": "RU",
     "TR": "TR1"
   },
+  "positions": ["", "TOP", "MIDDLE", "JUNGLE", "BOTTOM"],
+  "roles": ["", "DUO", "DUO_SUPPORT", "DUO_CARRY", "SOLO"],
   "riotApiKey": "env:RIOTAPI",
   "baseRiotUrl": ".api.pvp.net",
   "redisMemory": 768,
