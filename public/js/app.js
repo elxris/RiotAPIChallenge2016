@@ -56,6 +56,9 @@ new Vue({
             region: this.region
           },
           function(data) {
+            if (self.userData) {
+              return;
+            }
             self.$set('userData', data);
             self.$set('recentGames', '');
             if (self.screenStage === 'recentGames') {
@@ -65,6 +68,7 @@ new Vue({
           }
         ).fail(function() {
           self.$set('userData', null);
+          self.$set('recentGames', null);
           self.screenStage = 'start';
         });
       }
@@ -85,7 +89,7 @@ new Vue({
             console.log(self.recentGames);
           }
         ).fail(function() {
-          self.$set('recentGames', '');
+          self.$set('recentGames', null);
         });
       }
     }
