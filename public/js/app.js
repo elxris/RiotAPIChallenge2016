@@ -58,6 +58,9 @@ new Vue({
           function(data) {
             self.$set('userData', data);
             self.$set('recentGames', '');
+            if (self.screenStage === 'recentGames') {
+              self.loadRecentGames();
+            }
             console.log(data);
           }
         ).fail(function() {
