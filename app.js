@@ -2,6 +2,9 @@
 
 var express = require('express');
 var kraken = require('kraken-js');
+var P       = require('bluebird');
+var request = P.promisifyAll(require('request'));
+require('request-debug')(request);
 
 var options; var app;
 
@@ -15,7 +18,30 @@ options = {
      * Add any additional config setup or overrides here. `config` is an initialized
      * `confit` (https://github.com/krakenjs/confit/) configuration object.
      */
-    next(null, config);
+
+    request.getAsync(
+      {
+        baseUrl: 'https://ddragon.leagueoflegends.com/api/versions.json',
+        json: true
+      }
+    ).then(function({body:[version]}) {
+      return request.getAsync(
+        {
+          baseUrl: 'http://ddragon.leagueoflegends.com/cdn/' +
+            version + '/data/en_US/champion.json',
+          json: true
+        }
+      );
+    }).then(function({body:{data:champions}}) {
+      var extract = {};
+      for (var name in champions) {
+        var champion = champions[name];
+        extract[champion.key] = {name: champion.name, id: champion.id,
+          tags: champion.tags};
+      }
+      config.set('champions', extract);
+      next(null, config);
+    }).catch(next);
   }
 };
 
