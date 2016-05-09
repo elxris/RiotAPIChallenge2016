@@ -68,11 +68,11 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                     ($key === 'wardsPlaced' ? 'Wards' : 
                     ($key === 'kills' ? 'Kills' : 
                     ($key === 'deaths' ? 'Deaths' : 
-                    ($key === 'assists' ? 'Assists')))))))
+                    ($key === 'assists' ? 'Assists' : '')))))))
                   }}
-                .col.s8
+                template(v-for="category in stat"): .col.s8
                   .progress
-                    .determinate(v-bind:style="{width: stat.actual + '%'}")
+                    .determinate(v-bind:style="{width: category.actual + '%'}")
               h3.flow-text
                 | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
               h3.flow-text
