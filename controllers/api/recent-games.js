@@ -10,7 +10,7 @@ module.exports = function(router) {
     var redis = req.redis = new Redis();
     var _tier;
     redis.pipeline()
-         .hget('cached:leagues', req.body.region + ':' + req.body.summoner,
+         .hget('cached:league', req.body.region + ':' + req.body.summoner,
                function(err, data) {
                  data = data || '';
                  var [, tier, date] = data.split(/(.+):/);
