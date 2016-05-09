@@ -5,8 +5,9 @@ var {app, redis, api} = require('./.');
 var pendingLeague = require('./pendingLeague');
 var addPlayer = function(region, summoner, pipeline) {
   return pipeline.sadd('summoners', region + ':' + summoner)
-                 .hget('cached:league',
+                 .hget('cached:league', region + ':' + summoner,
                       function(err, league) {
+                        if (err) { throw err; }
                         if (!league) {
                           redis.sadd('pending:league', region + ':' + summoner);
                         }
