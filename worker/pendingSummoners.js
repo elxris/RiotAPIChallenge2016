@@ -26,10 +26,10 @@ module.exports = function() {
       var gamesCache = [];
       games.forEach(function(game) {
         var extract = {
-          gameId: recent.gameId,
-          team: recent.teamId,
-          championId: recent.championId,
-          stats: recent.stats,
+          gameId: game.gameId,
+          team: game.teamId,
+          championId: game.championId,
+          stats: game.stats,
           valid: false
         };
         if (
@@ -53,7 +53,6 @@ module.exports = function() {
         }
         gamesCache.push(extract);
       });
-      var recent = games[0];
       redis.hset('cached:recentGames', value,
                  JSON.stringify(gamesCache) + ':' + Date.now()
       );
