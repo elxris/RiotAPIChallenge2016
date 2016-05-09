@@ -67,7 +67,7 @@ module.exports = function() {
       } else {
         redis.publish('ready:recentGames:' + value, 'false');
       }
-      console.error(err);
+      console.error(err.body || err);
     });
   })
   .catch(function(err) {

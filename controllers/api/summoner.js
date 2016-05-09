@@ -16,8 +16,6 @@ module.exports = function(router) {
             'ready:players:' + req.body.region + ':' +  req.body.name,
             function(err, count) {
               redis.on('message', function(ch, val) {
-                redis.unsubscribe('ready:players:' +
-                                  req.body.region + ':' +  req.body.name);
                 if (!val || val === 'false') {
                   return res.status(404).end();
                 }
@@ -30,6 +28,9 @@ module.exports = function(router) {
       }
     );
     function getLeagueAndRespond(value) {
+      redis.end();
+      redis = req.redis = new Redis();
+
       var [, summonerId, profileIconId] = value.split(/(.+):/);
       redis.hget('cached:league', req.body.region + ':' + summonerId).then(
         function(val) {

@@ -37,7 +37,7 @@ module.exports = function() {
         redis.sadd('pending:players', player);
       }
       redis.publish('ready:players:' + player, 'false');
-      console.error(err);
+      console.error(err.body || err);
     });
   })
   .catch(function(err) {

@@ -39,7 +39,7 @@ module.exports = function() {
         redis.hset('cached:league', value, 'UNRANKED:' + Date.now());
         redis.publish('ready:league:' + value, 'UNRANKED');
       }
-      console.error(err);
+      console.error(err.body || err);
     });
   })
   .catch(function(err) {

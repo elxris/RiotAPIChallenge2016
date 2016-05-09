@@ -49,6 +49,7 @@ module.exports = function() {
           ) || {}).player;
           promise = redis.hget('cached:league', region + ':' + summonerId)
           .then(function(value) {
+            value = value || '';
             var [, league, date] = value.split(/(.+):/);
             return league;
           });
@@ -89,7 +90,7 @@ module.exports = function() {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:games', value);
       }
-      console.error(err);
+      console.error(err.body || err);
     });
   })
   .catch(function(err) {
