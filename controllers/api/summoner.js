@@ -12,7 +12,7 @@ module.exports = function(router) {
         var [, playerData, date] = value.split(/(.+):/);
         if (!value || (Date.now() - date) > 1000 * 60 * 30) {
           redis.sadd('pending:players', req.body.region + ':' + req.body.name);
-          redis.subscribe(
+          return redis.subscribe(
             'ready:players:' + req.body.region + ':' +  req.body.name,
             function(err, count) {
               redis.on('message', function(ch, val) {
