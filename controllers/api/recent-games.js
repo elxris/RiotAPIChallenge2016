@@ -25,14 +25,12 @@ module.exports = function(router) {
                                     return res.status(404).end();
                                   }
                                   res.json(val);
-                                  flushRedis();
                                 });
                               }
                             );
                           });
             }
             res.json(games);
-            flushRedis();
           }
         );
     res.on('close', flushRedis);

@@ -6,9 +6,11 @@ module.exports = function(router) {
 
   router.post('/', function(req, res) {
     var redis = req.redis = new Redis();
-    redis.hget('summonernames', req.body.region + ':' + req.body.name).then(
+    redis.hget('cached:basicData', req.body.region + ':' + req.body.name).then(
       function(value) {
-        if (!value) {
+        value = value || '';
+        var [, playerData, date] = value.split(/(.+):/);
+        if (!value || (Date.now() - date) > 1000 * 60 * 30) {
           return redis.sadd('pending:players', req.body.region + ':' + req.body.name)
           .then(function() {
             redis.subscribe('ready:players:' + req.body.region + ':' +  req.body.name,
@@ -23,9 +25,9 @@ module.exports = function(router) {
             );
           });
         }
-        return respond(value);
+        return respond(playerData);
         function respond(value) {
-          var [summonerId, profileIconId] = value.split(':');
+          var [, summonerId, profileIconId] = value.split(/(.+):/);
           res.send({summonerId: summonerId, profileIconId: profileIconId});
         }
       }
