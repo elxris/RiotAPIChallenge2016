@@ -54,12 +54,16 @@ module.exports = function() {
         }
         gamesCache.push(extract);
       });
-      redis.hset('cached:recentGames', value,
-                 JSON.stringify(gamesCache) + ':' + Date.now()
-      );
+      redis.pipeline()
+           .hset('cached:recentGames', value,
+                 JSON.stringify(gamesCache) + ':' + Date.now())
+           .publish('ready:recentGames:' + value, JSON.stringify(gamesCache))
+           .exec();
     }).catch(function(err) {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:summoners', value);
+      } else {
+        redis.publish('ready:recentGames:' + value, 'false');
       }
       console.error(err);
     });
