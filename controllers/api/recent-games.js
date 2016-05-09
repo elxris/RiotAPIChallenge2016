@@ -65,8 +65,8 @@ module.exports = function(router) {
           ['gold', game.stats.goldEarned / game.stats.timePlayed],
           ['minionsKilled', game.stats.minionsKilled / game.stats.timePlayed],
           ['wardsPlaced', game.stats.wardsPlaced / game.stats.timePlayed],
-          ['kills', game.stats.kills],
-          ['deaths', game.stats.deaths],
+          ['kills', game.stats.championsKilled],
+          ['deaths', game.stats.numDeaths],
           ['assists', game.stats.assists]
         ];
         game.keyStats = {};
