@@ -49,7 +49,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
     .col.s12.m8(v-if='screenStage === \'recentGames\' && !recentGames')
       .container.padding-5vh.center-align: .card: .card-content: +loader
     
-    template#recent-games.col.s12.m8(v-for='game in recentGames')
+    #recent-games.col.s12.m8: template(v-for='game in recentGames')
       .col.s12.m6
         .card.black-text
           .card-image
