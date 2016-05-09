@@ -5,25 +5,27 @@ var {app, redis, api} = require('./.');
 var background = require('./background');
 
 var addData = function(
+  commands,
   region, matchId, league, lane,
   role, key, score, champ, vsChamp
 ) {
   if (vsChamp) {
-    redis.zadd(
+    commands = commands.zadd(
       ['data', league, lane, role, key, champ, 'vs', vsChamp].join(':'),
       score, region + ':' + matchId
     );
   }
   if (champ) {
-    redis.zadd(
+    commands = commands.zadd(
       ['data', league, lane, role, key, champ].join(':'),
       score, region + ':' + matchId
     );
   }
-  redis.zadd(
+  commands = commands.zadd(
     ['data', league, lane, role, key].join(':'),
     score, region + ':' + matchId
   );
+  return commands;
 };
 
 module.exports = function() {
@@ -35,6 +37,8 @@ module.exports = function() {
     var [, region, matchId] = value.split(/(.+):/);
     return api.match(region, matchId)
     .then(function({body:game}) {
+      var commands = redis.pipeline();
+      var promises = [];
       game.participants.forEach(function(player) {
         var promise;
         if (game.participantIdentities[0].player) { //Has summonerId
@@ -58,39 +62,27 @@ module.exports = function() {
                     (p.timeline.line === player.timeline.line) &&
                     (p.timeline.role === player.timeline.role);
           })) || {};
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'damageDealt', player.stats.totalDamageDealtToChampions,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'damageTaken', player.stats.totalDamageTaken,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'gold', player.stats.goldEarned / game.matchDuration,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'minionsKilled', player.stats.minionsKilled / game.matchDuration,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'wardsPlaced', player.stats.wardsPlaced / game.matchDuration,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'kills', player.stats.kills,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'deaths', player.stats.deaths,
-            player.championId, vs.championId);
-          addData(region, matchId, league,
-            player.timeline.lane, player.timeline.role,
-            'assists', player.stats.assists,
-            player.championId, vs.championId);
+          var data = [
+            ['damageDealt', player.stats.totalDamageDealtToChampions],
+            ['damageTaken', player.stats.totalDamageTaken],
+            ['gold', player.stats.goldEarned / game.matchDuration],
+            ['minionsKilled', player.stats.minionsKilled / game.matchDuration],
+            ['wardsPlaced', player.stats.wardsPlaced / game.matchDuration],
+            ['kills', player.stats.kills],
+            ['deaths', player.stats.deaths],
+            ['assists', player.stats.assists]
+          ];
+          data.forEach(function([key, score]) {
+            commands = addData(commands, region, matchId, league,
+              player.timeline.lane, player.timeline.role,
+              key, score,
+              player.championId, vs.championId);
+          });
         });
+        promises.push(promise);
+      });
+      return _Promise.all(promises).then(function() {
+        return commands.exec();
       });
     })
     .catch(function(err) {
