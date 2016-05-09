@@ -31,24 +31,26 @@ module.exports = function(router) {
     );
     function getLeagueAndRespond(value) {
       var [, summonerId, profileIconId] = value.split(/(.+):/);
-      redis.hget().then(function(val) {
-        val = val || '';
-        var [, league, date] = val.split(/(.+):/);
-        if (!val || (Date.now() - date) > 1000 * 60 * 60) {
-          redis.sadd('pending:league', req.body.region + ':' + summonerId);
-          return redis.subscribe(
-            'ready:league:' + req.body.region + ':' + summonerId,
-            function(err, count) {
-              redis.on('message', function(ch, val) {
-                if (!val || val === 'false') {
-                  return res.status(404).end();
-                }
-                respond(summonerId, profileIconId, val);
+      redis.hget('cached:league', req.body.region + ':' + summonerId).then(
+        function(val) {
+          val = val || '';
+          var [, league, date] = val.split(/(.+):/);
+          if (!val || (Date.now() - date) > 1000 * 60 * 60) {
+            redis.sadd('pending:league', req.body.region + ':' + summonerId);
+            return redis.subscribe(
+              'ready:league:' + req.body.region + ':' + summonerId,
+              function(err, count) {
+                redis.on('message', function(ch, val) {
+                  if (!val || val === 'false') {
+                    return res.status(404).end();
+                  }
+                  respond(summonerId, profileIconId, val);
+                });
               });
-            });
+          }
+          respond(summonerId, profileIconId, league);
         }
-        respond(summonerId, profileIconId, league);
-      });
+      );
 
       function respond(summonerId, profileIconId, league) {
         res.send({summonerId: summonerId,
