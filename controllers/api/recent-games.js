@@ -64,7 +64,7 @@ module.exports = function(router) {
           ['damageTaken', game.stats.totalDamageTaken],
           ['gold', game.stats.goldEarned / game.stats.timePlayed],
           ['minionsKilled', game.stats.minionsKilled / game.stats.timePlayed],
-          ['wardsPlaced', game.stats.wardsPlaced / game.stats.timePlayed],
+          ['wardsPlaced', game.stats.wardPlaced / game.stats.timePlayed],
           ['kills', game.stats.championsKilled],
           ['deaths', game.stats.numDeaths],
           ['assists', game.stats.assists]
