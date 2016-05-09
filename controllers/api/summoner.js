@@ -41,6 +41,9 @@ module.exports = function(router) {
               'ready:league:' + req.body.region + ':' + summonerId,
               function(err, count) {
                 redis.on('message', function(ch, val) {
+                  if (ch !== 'ready:league:' + req.body.region + ':' + summonerId) {
+                    return;
+                  }
                   if (!val || val === 'false') {
                     return res.status(404).end();
                   }
@@ -53,7 +56,7 @@ module.exports = function(router) {
       );
 
       function respond(summonerId, profileIconId, league) {
-        res.send({summonerId: summonerId,
+        res.json({summonerId: summonerId,
                   profileIconId: profileIconId,
                   league: league});
       }

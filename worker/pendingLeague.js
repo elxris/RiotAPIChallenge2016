@@ -37,6 +37,7 @@ module.exports = function() {
         redis.sadd('pending:league', value);
       } else {
         redis.hset('cached:league', value, 'UNRANKED:' + Date.now());
+        redis.publish('ready:league:' + value, 'UNRANKED');
       }
       console.error(err);
     });
