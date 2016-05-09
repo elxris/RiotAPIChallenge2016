@@ -81,7 +81,7 @@ new Vue({
             league: this.userData.league
           },
           function(data) {
-            self.$set('recentGames', JSON.parse(data));
+            self.$set('recentGames', data);
             console.log(self.recentGames);
           }
         ).fail(function() {
