@@ -71,7 +71,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                     ($key === 'assists' ? 'Assists' : '')))))))
                   }}
                 .col.s8: template(v-for="category in stat")
-                  .progress(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}")
+                  .progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}")
                     .determinate(v-bind:style="{width: category.actual + '%'}" v-bind:class="{amber: $key === 'all'}")
               h3.flow-text
                 | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
