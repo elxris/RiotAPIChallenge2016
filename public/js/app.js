@@ -65,7 +65,7 @@ new Vue({
           }
         ).fail(function() {
           self.$set('userData', null);
-          self.screenStage = 'main';
+          self.screenStage = 'start';
         });
       }
     },
