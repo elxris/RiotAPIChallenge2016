@@ -5,6 +5,9 @@ $('.button-collapse').sideNav({
   edge: 'right', // Choose the horizontal origin
 });
 $('.collapsible').collapsible();
+$(document).ready(function() {
+   $('.tooltipped').tooltip({delay: 50});
+ });
 
 //*** APP ***
 new Vue({
