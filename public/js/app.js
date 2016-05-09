@@ -36,6 +36,9 @@ new Vue({
       console.log(val);
       localStorage.setItem('name', val);
       this.obtainData();
+    },
+    'recentGames': {
+      deep: true
     }
   },
   created: function() {
