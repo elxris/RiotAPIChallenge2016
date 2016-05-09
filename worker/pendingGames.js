@@ -43,8 +43,9 @@ module.exports = function() {
               return id.participantId === player.participantId;
             }
           ) || {}).player;
-          promise = redis.get('cached:' + region + ':' + summonerId + ':league')
-          .then(function(league) {
+          promise = redis.hget('cached:league', region + ':' + summonerId)
+          .then(function(value) {
+            var [league, date] = value.split(':');
             return league;
           });
         } else {

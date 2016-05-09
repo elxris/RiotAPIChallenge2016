@@ -3,7 +3,16 @@
 var {app, redis, api} = require('./.');
 
 var pendingLeague = require('./pendingLeague');
-var addPlayer = require('./lib/addPlayer');
+var addPlayer = function(region, summoner, pipeline) {
+  return pipeline.sadd('summoners', region + ':' + summoner)
+                 .hget('cached:league',
+                      function(err, league) {
+                        if (!league) {
+                          redis.sadd('pending:league', region + ':' + summoner);
+                        }
+                      }
+                 );
+};
 
 module.exports = function() {
   return redis.spop('pending:summoners')
@@ -13,27 +22,41 @@ module.exports = function() {
       return pendingLeague();
     }
     var [region, summoner] = value.split(':');
-    console.log('Getting games on ' + region + ' for ' + summoner);
-    return api.recent(region, summoner).then(function({body:result}) {
-      result.games.forEach(function(value) {
+    return api.recent(region, summoner).then(function({body:{games:games}}) {
+      var gamesCache = [];
+      games.forEach(function(game) {
+        var extract = {
+          gameId: recent.gameId,
+          team: recent.teamId,
+          championId: recent.championId,
+          stats: recent.stats,
+          valid: false
+        };
         if (
-          value.gameMode === 'CLASSIC' && value.gameType === 'MATCHED_GAME' &&
+          game.gameMode === 'CLASSIC' && game.gameType === 'MATCHED_GAME' &&
           ['NORMAL', 'RANKED_SOLO_5x5', 'RANKED_PREMADE_5x5', 'RANKED_TEAM_5x5',
-          'CAP_5x5'].indexOf(value.subType) >= 0
+          'CAP_5x5'].indexOf(game.subType) >= 0
         ) {
-          redis.sadd('games', region + ':' + value.gameId)
+          redis.sadd('games', region + ':' + game.gameId)
           .then(function(count) {
             if (count) {
-              value.fellowPlayers.forEach(function(player) {
-                addPlayer(region, player.summonerId, /*toLeague?*/ true);
+              var commands = redis.pipeline();
+              commands = addPlayer(region, summoner, commands);
+              game.fellowPlayers.forEach(function(player) {
+                commands = addPlayer(region, player.summonerId, commands);
               });
-              redis.sadd('pending:games', region + ':' + value.gameId);
+              commands.sadd('pending:games', region + ':' + game.gameId)
+                      .exec();
             }
           });
+          extract.valid = true;
         }
+        gamesCache.push(extract);
       });
-      redis.set('cached:' + region + ':' + summoner + ':games', '1',
-        'EX', /*30 minutes*/ 1800);
+      var recent = games[0];
+      redis.hset('cached:recentGames', value,
+                 JSON.stringify(gamesCache) + ':' + Date.now()
+      );
     }).catch(function(err) {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:summoners', value);

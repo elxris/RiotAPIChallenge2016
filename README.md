@@ -23,7 +23,7 @@ El orden de como son procesadas estas colas dependerá de la manera en la que RE
 
 ### 1) pending:players
 
-Esta es la primera cola donde del valor `{region}:{name}` se obteiene el `summonerId` y se guarda en un `HASH summonernames {region:name}:{summonerId}:{profileIconId}` para futuras referencias, esto es lo primero que un usuario va a consultar recien entra a la plaforma. Si la obtención del `summonerId` es satisfactoria entonces lo añade al `SET pending:summoners`.
+Esta es la primera cola donde del valor `{region}:{name}` se obteiene el `summonerId` y se guarda en un `HASH cached:basicData {region:name}:{summonerId}:{profileIconId}:{time}` para futuras referencias, esto es lo primero que un usuario va a consultar recien entra a la plaforma. Si la obtención del `summonerId` es satisfactoria entonces lo añade al `SET pending:summoners`.
 
 ### 2) pending:summoners
 
@@ -32,7 +32,7 @@ En esta se obtienen los juegos recientes donde se ponen en `SET pending:games` s
 ### 3) pending:league
 
 En esta tercera cola se busca las ligas del jugador. Por el momento sólo tomaremos en cuenta las *RANKED_SOLO_5x5*. Al obtener la lista de liga de los usuarios,
-se asignará a todos un `KEY cached:{region}:{summonerId}:league` de _2 días_ reemplazando si existe el valor antes (eliminando de `SET pending:league` si existe una coincidencia)
+se asignará a todos un `KEY cached:{region}:{summonerId}:league` de _2 días_ reemplazando si existe el valor antes (eliminando de `SET pending:league` si existe una coincidencial)
 
 ### 4) pending:games
 

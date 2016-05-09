@@ -3,7 +3,6 @@
 var {app, redis, api} = require('./.');
 
 var pendingGames = require('./pendingGames');
-var addPlayer = require('./lib/addPlayer');
 
 module.exports = function() {
   return redis.spop('pending:league')
@@ -13,25 +12,28 @@ module.exports = function() {
       return pendingGames();
     }
     var [region, summoner] = value.split(':');
-    console.log('Getting leagues ' + region + ' of ' + summoner);
     return api.league(region, summoner).then(function({body:result}) {
       var leagues = result[summoner];
+      var commands = redis.pipeline();
       leagues.forEach(function(league) {
         if (league.queue === 'RANKED_SOLO_5x5') {
           league.entries.forEach(function(player) {
-            redis.set('cached:' + region + ':' + player.playerOrTeamId +
-              ':league', league.tier, 'EX', /*2 days*/ 172800);
-            addPlayer(region, player.playerOrTeamId, /*toLeague?*/ false);
-            redis.srem('pending:league', region + ':' + player.playerOrTeamId);
+            commands = commands.hset('cached:league',
+                                     region + ':' + player.playerOrTeamId,
+                                     league.tier + ':' + Date.now());
+            commands = commands.sadd('summoners',
+                                     region + ':' + player.playerOrTeamId);
+            commands = commands.srem('pending:league',
+                                     region + ':' + player.playerOrTeamId);
           });
         }
       });
+      commands.exec();
     }).catch(function(err) {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:league', value);
       } else {
-        redis.set('cached:' + value + ':league',
-          'UNRANKED', 'EX', /*2 days*/ 172800);
+        redis.hset('cached:league', value, 'UNRANKED:' + Date.now());
       }
       console.error(err.body);
     });
