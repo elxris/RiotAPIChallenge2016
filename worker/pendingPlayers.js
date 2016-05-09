@@ -14,7 +14,7 @@ module.exports = function() {
     return api.summoner(region, name).then(function({body:players}) {
       var _player = players[Object.keys(players)[0]];
       redis.pipeline()
-      .publish('ready:players:' + name,
+      .publish('ready:players:' + player,
                _player.id + ':' + _player.profileIconId)
       .hset('cached:basicData', player,
             _player.id + ':' + _player.profileIconId + ':' + Date.now()
@@ -36,7 +36,7 @@ module.exports = function() {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:players', player);
       }
-      redis.publish('ready:players:' + name, 'false');
+      redis.publish('ready:players:' + player, 'false');
       console.error(err);
     });
   })

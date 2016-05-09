@@ -11,7 +11,7 @@ module.exports = function(router) {
         if (!value) {
           return redis.sadd('pending:players', req.body.region + ':' + req.body.name)
           .then(function() {
-            redis.subscribe('ready:players:' + req.body.name,
+            redis.subscribe('ready:players:' + req.body.region + ':' +  req.body.name,
               function(err, count) {
                 redis.on('message', function(ch, val) {
                   if (!val || val === 'false') {
