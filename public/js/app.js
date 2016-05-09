@@ -87,12 +87,3 @@ new Vue({
     }
   }
 });
-
-Vue.component('recent-game', {
-  template: '#recent-game-template',
-  props: {
-    game: Object
-  },
-  computed: {
-  }
-});

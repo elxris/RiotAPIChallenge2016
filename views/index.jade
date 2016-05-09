@@ -47,12 +47,9 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
               | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
 
     .col.s12.m8(v-if='screenStage === \'recentGames\' && !recentGames')
-      .container.padding-5vh: .card: .card-content: +loader
+      .container.padding-5vh.center-align: .card: .card-content: +loader
     
-    recent-game(v-for='game in recentGames' v-bind:game='game')
-    
-    script(type='text/x-template' id='recent-game-template')
-    
+    template(v-for='game in recentGames' v-bind:game='game')
       .col.s12.m6
         .container.padding-5vh
           .card.black-text
@@ -64,7 +61,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                 | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
               h3.flow-text
                 | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
-
+    
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
       | © 2014 Copyright Text
