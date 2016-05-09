@@ -36,9 +36,6 @@ new Vue({
       console.log(val);
       localStorage.setItem('name', val);
       this.obtainData();
-    },
-    'recentGames': {
-      deep: true
     }
   },
   created: function() {
@@ -59,12 +56,12 @@ new Vue({
             region: this.region
           },
           function(data) {
-            self.userData = data;
-            self.recentGames = '';
+            self.$set('userData', data);
+            self.$set('recentGames', '');
             console.log(data);
           }
         ).fail(function() {
-          self.userData = '';
+          self.$set('userData', '');
           self.screenStage = 'main';
         });
       }
@@ -72,18 +69,18 @@ new Vue({
     loadRecentGames: function() {
       if (this.region && this.userData.summonerId) {
         self.screenStage = 'recentGames';
-        self.recentGames = '';
+        self.$set('recentGames', '');
         $.post('/api/recent-games',
           {
             summoner: this.userData.summonerId,
             region: this.region
           },
           function(data) {
-            self.recentGames = JSON.parse(data);
+            self.$set('recentGames', JSON.parse(data));
             console.log(self.recentGames);
           }
         ).fail(function() {
-          self.recentGames = '';
+          self.$set('recentGames', '');
         });
       }
     }
