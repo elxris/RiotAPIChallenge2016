@@ -53,8 +53,10 @@ module.exports = function(router) {
     function getScores(games) {
       _tier = _tier || 'UNRANKED';
       games = JSON.parse(games);
-      var cards = new Redis().pipeline();
-      var scores = new Redis().pipeline();
+      var _cards = new Redis();
+      var _scores = new Redis();
+      var cards = _cards.pipeline();
+      var scores = _scores.pipeline();
       games.forEach(function(game) {
         if (!game.valid) {
           return;
@@ -118,8 +120,8 @@ module.exports = function(router) {
       }).then(function() {
         res.json(games);
       }).finally(function() {
-        cards.end();
-        scores.end();
+        _cards.end();
+        _scores.end();
       });
     }
   });
