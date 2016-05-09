@@ -11,7 +11,7 @@ module.exports = function() {
       // TODO pendingSummonerLeagues
       return pendingGames();
     }
-    var [region, summoner] = value.split(':');
+    var [, region, summoner] = value.split(/(.+):/);
     return api.league(region, summoner).then(function({body:result}) {
       var leagues = result[summoner];
       var commands = redis.pipeline();
@@ -35,7 +35,7 @@ module.exports = function() {
       } else {
         redis.hset('cached:league', value, 'UNRANKED:' + Date.now());
       }
-      console.error(err.body);
+      console.error(err);
     });
   })
   .catch(function(err) {

@@ -21,7 +21,7 @@ module.exports = function() {
       // TODO pendingSummonerLeagues
       return pendingLeague();
     }
-    var [region, summoner] = value.split(':');
+    var [, region, summoner] = value.split(/(.+):/);
     return api.recent(region, summoner).then(function({body:{games:games}}) {
       var gamesCache = [];
       games.forEach(function(game) {
@@ -61,7 +61,7 @@ module.exports = function() {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:summoners', value);
       }
-      console.error(err.body);
+      console.error(err);
     });
   })
   .catch(function(err) {

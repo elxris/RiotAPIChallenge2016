@@ -32,7 +32,7 @@ module.exports = function() {
     if (!value) {
       return background();
     }
-    var [region, matchId] = value.split(':');
+    var [, region, matchId] = value.split(/(.+):/);
     return api.match(region, matchId)
     .then(function({body:game}) {
       game.participants.forEach(function(player) {
@@ -45,7 +45,7 @@ module.exports = function() {
           ) || {}).player;
           promise = redis.hget('cached:league', region + ':' + summonerId)
           .then(function(value) {
-            var [league, date] = value.split(':');
+            var [, league, date] = value.split(/(.+):/);
             return league;
           });
         } else {
@@ -97,7 +97,7 @@ module.exports = function() {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:games', value);
       }
-      console.error(err.body);
+      console.error(err);
     });
   })
   .catch(function(err) {

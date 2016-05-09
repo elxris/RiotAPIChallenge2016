@@ -36,8 +36,8 @@ module.exports = function() {
       if (err.statusCode !== 404 && err.statusCode !== 400) {
         redis.sadd('pending:players', player);
       }
-      redis.publish('ready:players:' + player, 'false');
-      console.error(err.body);
+      redis.publish('ready:players:' + name, 'false');
+      console.error(err);
     });
   })
   .catch(function(err) {
