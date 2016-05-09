@@ -67,6 +67,7 @@ new Vue({
       }
     },
     loadRecentGames: function() {
+      var self = this;
       if (this.region && this.userData.summonerId) {
         self.screenStage = 'recentGames';
         self.$set('recentGames', '');
