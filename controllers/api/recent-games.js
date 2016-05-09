@@ -111,7 +111,7 @@ module.exports = function(router) {
           );
         });
       });
-      redis.exec().then(function() {
+      cards.exec().then(function() {
         return scores.exec();
       }).then(function() {
         res.json(games);
