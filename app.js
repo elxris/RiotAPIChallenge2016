@@ -21,13 +21,13 @@ options = {
 
     request.getAsync(
       {
-        baseUrl: 'https://ddragon.leagueoflegends.com/api/versions.json',
+        url: 'https://ddragon.leagueoflegends.com/api/versions.json',
         json: true
       }
     ).then(function({body:[version]}) {
       return request.getAsync(
         {
-          baseUrl: 'http://ddragon.leagueoflegends.com/cdn/' +
+          url: 'http://ddragon.leagueoflegends.com/cdn/' +
             version + '/data/en_US/champion.json',
           json: true
         }
