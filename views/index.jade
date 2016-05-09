@@ -56,7 +56,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
             img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
             span.card-title {{champions[game.championId].name}}
           .card-content.center-align
-            h3(v-if="!game.valid")
+            div(v-if="!game.valid")
               h3.flow-text Unfortunately this game type is not supported
             div(v-else)
               template(v-for="stat in game.keyStats"): .row
