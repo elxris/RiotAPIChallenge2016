@@ -21,6 +21,9 @@ module.exports = function() {
             commands = commands.hset('cached:league',
                                      region + ':' + player.playerOrTeamId,
                                      league.tier + ':' + Date.now());
+            commands = commands.publish('ready:league:' +
+                                        region + ':' + player.playerOrTeamId,
+                                        league.tier);
             commands = commands.sadd('summoners',
                                      region + ':' + player.playerOrTeamId);
             commands = commands.srem('pending:league',

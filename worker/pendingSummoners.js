@@ -8,7 +8,9 @@ var addPlayer = function(region, summoner, pipeline) {
                  .hget('cached:league', region + ':' + summoner,
                       function(err, league) {
                         if (err) { throw err; }
-                        if (!league) {
+                        league = league || league;
+                        var [, tier, time] = league.split(/(.+):/);
+                        if (!league || (Date.now() - time) > 1000 * 60 * 60) {
                           redis.sadd('pending:league', region + ':' + summoner);
                         }
                       }

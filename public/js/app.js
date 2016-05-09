@@ -71,13 +71,14 @@ new Vue({
     },
     loadRecentGames: function() {
       var self = this;
-      if (this.region && this.userData.summonerId) {
+      if (this.region && this.userData) {
         self.screenStage = 'recentGames';
         self.$set('recentGames', '');
         $.post('/api/recent-games',
           {
             summoner: this.userData.summonerId,
-            region: this.region
+            region: this.region,
+            league: this.userData.league
           },
           function(data) {
             self.$set('recentGames', JSON.parse(data));
