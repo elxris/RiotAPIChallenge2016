@@ -71,6 +71,7 @@ module.exports = function(router) {
         game.keyStats = {};
         data.forEach(function(keys) {
           var [key, value] = keys;
+          var keyStats = game.keyStats[key] = {};
           var index = ['data', _tier, positions[game.stats.playerPosition],
                       roles[game.stats.playerRole || 0], key].join(':');
           cards = cards.zcard(index, function(err, zcard) {
@@ -79,13 +80,13 @@ module.exports = function(router) {
               var max = Math.ceil(zcard * 0.9);
               scores = scores.zrange(index, min, min + 1, 'WITHSCORES',
                 function(err, data) {
-                  game.keyStats.min = data[1];
+                  keyStats.min = data[1];
                 }
               );
               scores = scores.zrange(index, max, max + 1, 'WITHSCORES',
                 function(err, data) {
-                  game.keyStats.max = data[1];
-                  game.keyStats.actual = Math.min(100, value / data[1] * 100);
+                  keyStats.max = data[1];
+                  keyStats.actual = Math.min(100, value / data[1] * 100);
                 }
               );
             }
@@ -97,13 +98,13 @@ module.exports = function(router) {
                 var max = Math.ceil(zcard * 0.9);
                 scores = scores.zrange(index, min, min + 1, 'WITHSCORES',
                   function(err, data) {
-                    game.keyStats.min = data[1];
+                    keyStats.min = data[1];
                   }
                 );
                 scores = scores.zrange(index, max, max + 1, 'WITHSCORES',
                   function(err, data) {
-                    game.keyStats.max = data[1];
-                    game.keyStats.actual = Math.min(100, value / data[1] * 100);
+                    keyStats.max = data[1];
+                    keyStats.actual = Math.min(100, value / data[1] * 100);
                   }
                 );
               }
