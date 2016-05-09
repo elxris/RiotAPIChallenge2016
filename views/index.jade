@@ -9,7 +9,7 @@ head
   link(rel="stylesheet" href="/css/app.css")
   meta(name="viewport" content="width=device-width, initial-scale=1.0")
 body.grey-text.text-lighten-4.blue-grey.lighten-4
-  #app.row.blue.darken-5(style="margin-bottom: 0;").blue
+  #app.row.blue.darken-5(style="margin-bottom: 0;").blue: .row
     .col.s12.m4.blue.darken-3.sidebar
       .container.padding-5vh.center-align: .row
         .col.s12
@@ -49,18 +49,17 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
     .col.s12.m8(v-if='screenStage === \'recentGames\' && !recentGames')
       .container.padding-5vh.center-align: .card: .card-content: +loader
     
-    .col.s12.m8(v-for='game in recentGames' v-bind:game='game')
+    #recent-games.col.s12.m8(v-for='game in recentGames')
       .col.s12.m6
-        .container.padding-5vh
-          .card.black-text
-            .card-image
-              img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
-              span.card-title {{champions[game.championId].name}}
-            .card-content.center-align
-              h3.flow-text
-                | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
-              h3.flow-text
-                | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
+        .card.black-text
+          .card-image
+            img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
+            span.card-title {{champions[game.championId].name}}
+          .card-content.center-align
+            h3.flow-text
+              | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
+            h3.flow-text
+              | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
     
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
