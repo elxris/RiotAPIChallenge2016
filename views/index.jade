@@ -25,7 +25,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
         .row(v-if='userData && name && region')
           .col.s12.margin-1em
             img.circle.responsive-img.z-depth-3(v-bind:src="profileIcon")
-          .col.s8.margin-1em
+          .col.s6.offset-s3.margin-1em
             img.circle.responsive-img(src="/img/tiers/{{userData.league}}.png")
           .col.s12.waves-effect.waves-light.margin-1em(v-on:click="loadRecentGames")
             p.flow-text Recent Games
