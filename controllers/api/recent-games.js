@@ -115,7 +115,6 @@ module.exports = function(router) {
           });
           cards = cards.zcard(index + ':' + game.championId,
             function(err, zcard) {
-              if (err) {console.error(err);}
               if (zcard) {
                 var median = Math.floor(zcard * 0.1);
                 scores = scores.zrange(index + ':' + game.championId,
@@ -124,6 +123,8 @@ module.exports = function(router) {
                     keyStats.champ.min = data[1];
                   }
                 );
+              } else {
+                console.log(index + ':' + game.championId);
               }
             }
           );
@@ -138,6 +139,8 @@ module.exports = function(router) {
                     keyStats.champ.max = data[1];
                   }
                 );
+              } else {
+                console.log(compl + ':' + game.championId);
               }
             }
           );
