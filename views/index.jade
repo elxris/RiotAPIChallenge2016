@@ -72,7 +72,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                       ($key === 'deaths' ? 'Deaths' : 
                       ($key === 'assists' ? 'Assists' : '')))))))
                     }}
-                  .col.s8: template(v-for="category in stat"): .row.valign-wrapper
+                  .col.s8: template(v-for="category in stat"): .row.left-align
                     .col.s12(style="padding: 0;")
                       div {{$key === 'all'? 'Lane' : 'Champ'}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
