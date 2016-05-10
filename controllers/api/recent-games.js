@@ -10,7 +10,8 @@ module.exports = function(router) {
     'GOLD': 'PLATINUM',
     'PLATINUM': 'DIAMOND',
     'DIAMOND': 'MASTER',
-    'MASTER': 'CHALLENGER'
+    'MASTER': 'CHALLENGER',
+    'CHALLENGER': 'CHALLENGER'
   };
   router.post('/', function(req, res) {
     var positions = req.app.kraken.get('positions');
@@ -92,7 +93,7 @@ module.exports = function(router) {
                        roles[game.stats.playerRole || 0], key].join(':');
           cards = cards.zcard(index, function(err, zcard) {
             if (zcard) {
-              var median = Math.floor(zcard * 0.5);
+              var median = Math.floor(zcard * 0.1);
               scores = scores.zrange(index, median, median + 1, 'WITHSCORES',
                 function(err, data) {
                   keyStats.all.min = data[1];
@@ -113,7 +114,7 @@ module.exports = function(router) {
           cards = cards.zcard(index + ':' + game.championId,
             function(err, zcard) {
               if (zcard) {
-                var median = Math.floor(zcard * 0.5);
+                var median = Math.floor(zcard * 0.1);
                 scores = scores.zrange(index + ':' + game.championId,
                                        median, median + 1, 'WITHSCORES',
                   function(err, data) {
