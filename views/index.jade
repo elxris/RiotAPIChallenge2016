@@ -74,7 +74,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                     }}
                   .col.s8: template(v-for="category in stat"): .row.valign-wrapper
                     .col.s2(style="padding: 0;")
-                      .flow-text {{$key === 'all'? 'Lane' : 'Champ'}}
+                      div {{$key === 'all'? 'Lane' : 'Champ'}}
                     .col.s10.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
                       .valign.determinate(v-bind:style="{width: category.actual + '%'}" v-bind:class="{amber: $key === 'all'}")
                 h3.flow-text
