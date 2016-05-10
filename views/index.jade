@@ -53,8 +53,12 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
       
       #loader.col.s12(v-if='screenStage === \'recentGames\' && recentGames')
         .container
-          H2 Recent Games
-          .flow-text Lmao Lmao
+          .card: .card-content
+            .card-title Recent Games
+            .flow-text
+              | Here is a list of your most recent games, in each of one, we compare
+              | your champion performance with the average performance of players in the 
+              | next division.
       
       #recent-games.col.s12: template(v-for='game in recentGames')
         .col.s12.m6
@@ -70,7 +74,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                 template(v-for="stat in game.keyStats"): .row
                   .col.s4.
                     {{ $key === 'damageDealt' ? 'Damage' : 
-                      ($key === 'damageTaken' ? 'Tank' : 
+                      ($key === 'damageTaken' ? 'Damage Taken' : 
                       ($key === 'gold' ? 'Gold' : 
                       ($key === 'minionsKilled' ? 'Minions' : 
                       ($key === 'wardsPlaced' ? 'Wards' : 
@@ -81,13 +85,13 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                   .col.s8: template(v-for="category in stat"): .row.left-align
                     .col.s12(style="padding: 0;")
                       div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
-                      div.right {{category.actual}} of {{category.max}}
+                      div.right {{category.actual % 0 == 0 ? (category.actual * 60).toFixed(0) : category.actual}} of {{category.max % 0 == 0 ? (category.max * 60).toFixed(0) : category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
                       .valign.determinate(v-bind:style="{width: Math.abs(100*(category.actual - Math.min(category.min))/(Math.abs(category.min - category.max))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
-      | © 2016 Poro Couch
+      | © 2016 Poro Couch isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
       a.grey-text.text-lighten-4.right(href='https://github.com/elxris/RiotAPIChallenge2016') We love Github
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js")

@@ -84,8 +84,8 @@ module.exports = function(router) {
         data.forEach(function(keys) {
           var [key, value] = keys;
           var keyStats = game.keyStats[key] = {all: {}, champ: {}};
-          keyStats.champ.actual = value;
-          keyStats.all.actual = value;
+          keyStats.champ.actual = value || 0;
+          keyStats.all.actual = value || 0;
           var index = ['data', _tier, positions[game.stats.playerPosition],
                       roles[game.stats.playerRole || 0], key].join(':');
           var compl = ['data', tiers[_tier],
