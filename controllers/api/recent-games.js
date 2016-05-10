@@ -92,6 +92,7 @@ module.exports = function(router) {
                        positions[game.stats.playerPosition],
                        roles[game.stats.playerRole || 0], key].join(':');
           cards = cards.zcard(index, function(err, zcard) {
+            if (err) {console.error(err);}
             if (zcard) {
               var median = Math.floor(zcard * 0.1);
               scores = scores.zrange(index, median, median + 1, 'WITHSCORES',
@@ -102,6 +103,7 @@ module.exports = function(router) {
             }
           });
           cards = cards.zcard(compl, function(err, zcard) {
+            if (err) {console.error(err);}
             if (zcard) {
               var median = Math.floor(zcard * 0.5);
               scores = scores.zrange(compl, median, median + 1, 'WITHSCORES',
@@ -113,6 +115,7 @@ module.exports = function(router) {
           });
           cards = cards.zcard(index + ':' + game.championId,
             function(err, zcard) {
+              if (err) {console.error(err);}
               if (zcard) {
                 var median = Math.floor(zcard * 0.1);
                 scores = scores.zrange(index + ':' + game.championId,
@@ -126,6 +129,7 @@ module.exports = function(router) {
           );
           cards = cards.zcard(compl + ':' + game.championId,
             function(err, zcard) {
+              if (err) {console.error(err);}
               if (zcard) {
                 var median = Math.floor(zcard * 0.5);
                 scores = scores.zrange(compl + ':' + game.championId,
