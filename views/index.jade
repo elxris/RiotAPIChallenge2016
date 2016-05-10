@@ -61,7 +61,8 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
           .card.black-text
             .card-image
               img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
-              span.card-title {{champions[game.championId].name}}
+              span.card-title(style="border-bottom: thick solid {{game.stats.win ? '#c6ff00' : '#f44336'}};").
+                {{champions[game.championId].name + ' - ' + game.stats.championsKilled + '/' + game.stats.numDeaths + '/' + game.stats.assists}}
             .card-content.center-align
               div(v-if="!game.valid")
                 h3.flow-text Unfortunately this game type is not supported
@@ -79,7 +80,8 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                     }}
                   .col.s8: template(v-for="category in stat"): .row.left-align
                     .col.s12(style="padding: 0;")
-                      div {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
+                      div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
+                      div.right {{category.actual}} of {{category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
                       .valign.determinate(v-bind:style="{width: Math.abs(100*(category.actual - Math.min(category.min))/(Math.abs(category.min - category.max))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
