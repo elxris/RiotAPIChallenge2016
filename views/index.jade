@@ -55,7 +55,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
         .container
           .card.black-text: .card-content
             .card-title Recent Games
-            blockquote
+            p
               | Here is a list of your most recent games, in each of one, we compare
               | your champion performance with the average performance of players in the 
               | next division.
@@ -72,7 +72,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                 h3.flow-text Unfortunately this game type is not supported
               div(v-else)
                 template(v-for="stat in game.keyStats"): .row
-                  .col.s4.
+                  .col.s4.right-align
                     {{ $key === 'damageDealt' ? 'Damage' : 
                       ($key === 'damageTaken' ? 'Damage Taken' : 
                       ($key === 'gold' ? 'Gold' : 
@@ -85,7 +85,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                   .col.s8: template(v-for="category in stat"): .row.left-align
                     .col.s12(style="padding: 0;")
                       div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
-                      div.right {{(category.actual % 0) === 0 ? (category.actual * 60).toFixed(0) : category.actual}} of {{(category.max % 0) === 0 ? (category.max * 60).toFixed(0) : category.max}}
+                      div.right {{(category.actual % 1) !== 0 ? (category.actual * 60).toFixed(0) : category.actual}} of {{(category.max % 1) !== 0 ? (category.max * 60).toFixed(0) : category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
                       .valign.determinate(v-bind:style="{width: Math.abs(100*(category.actual - Math.min(category.min))/(Math.abs(category.min - category.max))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
