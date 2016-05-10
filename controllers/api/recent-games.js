@@ -143,7 +143,9 @@ module.exports = function(router) {
         return scores.exec();
       }).then(function() {
         res.json(games);
-      }).tap(console.error).finally(function() {
+      }).catch(function(err) {
+        console.error(err);
+      }).finally(function() {
         _cards.end();
         _scores.end();
       });
