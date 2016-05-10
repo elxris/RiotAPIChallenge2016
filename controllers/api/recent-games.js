@@ -100,6 +100,8 @@ module.exports = function(router) {
                   keyStats.all.min = data[1];
                 }
               );
+            } else {
+              keyStats.all.min = 0;
             }
           });
           cards = cards.zcard(compl, function(err, zcard) {
@@ -111,6 +113,8 @@ module.exports = function(router) {
                   keyStats.all.max = data[1];
                 }
               );
+            } else {
+              keyStats.all.max = 0;
             }
           });
           cards = cards.zcard(index + ':' + game.championId,
@@ -124,7 +128,7 @@ module.exports = function(router) {
                   }
                 );
               } else {
-                console.log(index + ':' + game.championId);
+                keyStats.champ.min = 0;
               }
             }
           );
@@ -140,7 +144,7 @@ module.exports = function(router) {
                   }
                 );
               } else {
-                console.log(compl + ':' + game.championId);
+                keyStats.champ.max = 0;
               }
             }
           );
