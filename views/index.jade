@@ -25,13 +25,10 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
         .row(v-if='userData && name && region')
           .col.s12
             img.circle.responsive-img.z-depth-3(v-bind:src="profileIcon")
-            .flow-text.center-align {{0}} pts
           .col.s4.offset-s4(style="margin-top: -1em;")
             img.circle.responsive-img(src="/img/tiers/{{userData.league}}.png")
           .col.s12.waves-effect.waves-light.margin-1em(v-on:click="loadRecentGames")
             p.flow-text Recent Games
-          .col.s12.waves-effect.waves-light.margin-1em
-            p.flow-text Challenges
         .col.s12(v-if='userData === \'\' && name && region')
           +loader
 
@@ -87,7 +84,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                       div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
                       div.right {{(category.actual % 1) !== 0 ? (category.actual * 60).toFixed(1) : category.actual}} of {{(category.max % 1) !== 0 ? (category.max * 60).toFixed(1) : category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
-                      .valign.determinate(v-bind:style="{width: Math.abs(100*(category.actual - Math.min(category.min))/(Math.abs(category.min - category.max))) + '%'}" v-bind:class="{amber: $key === 'all'}")
+                      .valign.determinate(v-bind:style="{width: Math.max(100, Math.abs(100*(category.actual - Math.min(category.min, category.max))/(Math.abs(category.min - category.max)))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
