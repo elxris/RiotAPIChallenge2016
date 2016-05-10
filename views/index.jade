@@ -23,10 +23,10 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
               input#first_name(type='text' v-model='name' debounce='999' v-bind:class="[userData === null ? 'red-text': '']")
               label.blue-text.text-lighten-4(for='first_name') Summoner Name
         .row(v-if='userData && name && region')
-          .col.s12.margin-1em
+          .col.s12
             img.circle.responsive-img.z-depth-3(v-bind:src="profileIcon")
             .flow-text.center-align {{0}} pts
-          .col.s4.offset-s4.margin-1em
+          .col.s4.offset-s4(style="margin-top: -1em;")
             img.circle.responsive-img(src="/img/tiers/{{userData.league}}.png")
           .col.s12.waves-effect.waves-light.margin-1em(v-on:click="loadRecentGames")
             p.flow-text Recent Games
@@ -48,10 +48,10 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
               h3.flow-text
                 | We came to make that easy! Just let a Poro Coach you based on your progress and challenging you to get better.
 
-      #loader.col.s12.m8(v-if='screenStage === \'recentGames\' && !recentGames')
+      #loader.col.s12(v-if='screenStage === \'recentGames\' && !recentGames')
         .container.padding-5vh.center-align: .card: .card-content: +loader
     
-      #recent-games.col.s12.m8: template(v-for='game in recentGames')
+      #recent-games.col.s12: template(v-for='game in recentGames')
         .col.s12.m6
           .card.black-text
             .card-image
@@ -72,9 +72,13 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                       ($key === 'deaths' ? 'Deaths' : 
                       ($key === 'assists' ? 'Assists' : '')))))))
                     }}
-                  .col.s8: template(v-for="category in stat")
-                    .progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
-                      .determinate(v-bind:style="{width: category.actual + '%'}" v-bind:class="{amber: $key === 'all'}")
+                  .col.s8: template(v-for="category in stat"): .row.valign-wrapper
+                    .col.s1
+                      img.responsive-img(src="/img/tiers/{{userData.league}}.png")
+                    .col.s10.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
+                      .valign.determinate(v-bind:style="{width: category.actual + '%'}" v-bind:class="{amber: $key === 'all'}")
+                    .col.s1
+                      img.responsive-img(src="/img/tiers/{{userData.league}}.png")
                 h3.flow-text
                   | We know you love League of Legends, and maybe you want to be a better player but is not always that easy, sometimes we stuck ourselves in one league, and we don't know how to upgrade our skills.
                 h3.flow-text
