@@ -143,10 +143,10 @@ module.exports = function(router) {
         return scores.exec();
       }).then(function() {
         res.json(games);
-      }).finally(function() {
+      }).tap(console.error).finally(function() {
         _cards.end();
         _scores.end();
-      }).catch(next);
+      });
     }
   });
 
