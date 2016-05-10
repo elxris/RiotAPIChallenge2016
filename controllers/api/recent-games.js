@@ -130,7 +130,7 @@ module.exports = function(router) {
                 scores = scores.zrange(compl + ':' + game.championId,
                                        median, median + 1, 'WITHSCORES',
                   function(err, data) {
-                    keyStats.champ.min = data[1];
+                    keyStats.champ.max = data[1];
                   }
                 );
               }
