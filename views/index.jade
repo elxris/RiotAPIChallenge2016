@@ -9,8 +9,8 @@ head
   link(rel="stylesheet" href="/css/app.css")
   meta(name="viewport" content="width=device-width, initial-scale=1.0")
 body.grey-text.text-lighten-4.blue-grey.lighten-4
-  #app.row.blue.darken-5(style="margin-bottom: 0;").blue: .row
-    #sidebar.col.s12.m4.blue.darken-3.sidebar
+  #app.row.grey.darken-4(style="margin-bottom: 0;"): .row
+    #sidebar.col.s12.m4.blue-grey.lighten-5.sidebar
       .container.padding-5vh.center-align: .row
         .row: .col.s12
           .row
@@ -84,7 +84,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                       div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
                       div.right {{(category.actual % 1) !== 0 ? (category.actual * 60).toFixed(1) : category.actual}} of {{(category.max % 1) !== 0 ? (category.max * 60).toFixed(1) : category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
-                      .valign.determinate(v-bind:style="{width: Math.max(100, Math.abs(100*(category.actual - Math.min(category.min, category.max))/(Math.abs(category.min - category.max)))) + '%'}" v-bind:class="{amber: $key === 'all'}")
+                      .valign.determinate(v-bind:style="{width: Math.min(100, Math.abs(100*(category.actual - Math.min(category.min, category.max))/(Math.abs(category.min - category.max)))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
   footer.blue.darken-2(style="padding-top: 1em; padding-bottom: 1em;")
     .container
