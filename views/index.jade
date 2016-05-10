@@ -75,9 +75,9 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                   .col.s4.right-align.
                     {{ $key === 'damageDealt' ? 'Damage' : 
                       ($key === 'damageTaken' ? 'Damage Taken' : 
-                      ($key === 'gold' ? 'Gold' : 
-                      ($key === 'minionsKilled' ? 'Minions' : 
-                      ($key === 'wardsPlaced' ? 'Wards' : 
+                      ($key === 'gold' ? 'Gold / min' : 
+                      ($key === 'minionsKilled' ? 'Minions / min' : 
+                      ($key === 'wardsPlaced' ? 'Wards / min' : 
                       ($key === 'kills' ? 'Kills' : 
                       ($key === 'deaths' ? 'Deaths' : 
                       ($key === 'assists' ? 'Assists' : '')))))))
@@ -85,7 +85,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                   .col.s8: template(v-for="category in stat"): .row.left-align
                     .col.s12(style="padding: 0;")
                       div.left {{$key === 'all'? 'Lane Performance' : 'Champion Performance'}}
-                      div.right {{(category.actual % 1) !== 0 ? (category.actual * 60).toFixed(0) : category.actual}} of {{(category.max % 1) !== 0 ? (category.max * 60).toFixed(0) : category.max}}
+                      div.right {{(category.actual % 1) !== 0 ? (category.actual * 60).toFixed(1) : category.actual}} of {{(category.max % 1) !== 0 ? (category.max * 60).toFixed(0) : category.max}}
                     .col.s12.progress.tooltipped(v-bind:class="{amber: $key === 'all', 'lighten-5': $key === 'all'}" data-position='left' data-tooltip="{{$key}}" data-delay="50")
                       .valign.determinate(v-bind:style="{width: Math.abs(100*(category.actual - Math.min(category.min))/(Math.abs(category.min - category.max))) + '%'}" v-bind:class="{amber: $key === 'all'}")
 
