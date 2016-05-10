@@ -72,7 +72,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
                 h3.flow-text Unfortunately this game type is not supported
               div(v-else)
                 template(v-for="stat in game.keyStats"): .row
-                  .col.s4.right-align
+                  .col.s4.right-align.
                     {{ $key === 'damageDealt' ? 'Damage' : 
                       ($key === 'damageTaken' ? 'Damage Taken' : 
                       ($key === 'gold' ? 'Gold' : 
