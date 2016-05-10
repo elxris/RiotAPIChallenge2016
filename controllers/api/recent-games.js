@@ -3,7 +3,15 @@
 var Redis = require('ioredis');
 
 module.exports = function(router) {
-
+  var tiers = {
+    'UNRANKED': 'BRONZE',
+    'BRONZE': 'SILVER',
+    'SILVER': 'GOLD',
+    'GOLD': 'PLATINUM',
+    'PLATINUM': 'DIAMOND',
+    'DIAMOND': 'MASTER',
+    'MASTER': 'CHALLENGER'
+  };
   router.post('/', function(req, res) {
     var positions = req.app.kraken.get('positions');
     var roles = req.app.kraken.get('roles');
@@ -74,22 +82,30 @@ module.exports = function(router) {
         game.keyStats = {};
         data.forEach(function(keys) {
           var [key, value] = keys;
+          keyStats.champ.actual = value;
+          keyStats.all.actual = value;
           var keyStats = game.keyStats[key] = {all: {}, champ: {}};
           var index = ['data', _tier, positions[game.stats.playerPosition],
                       roles[game.stats.playerRole || 0], key].join(':');
+          var compl = ['data', tiers[_tier],
+                       positions[game.stats.playerPosition],
+                       roles[game.stats.playerRole || 0], key].join(':');
           cards = cards.zcard(index, function(err, zcard) {
             if (zcard) {
-              var min = Math.floor(zcard * 0.1);
-              var max = Math.ceil(zcard * 0.9);
-              scores = scores.zrange(index, min, min + 1, 'WITHSCORES',
+              var median = Math.floor(zcard * 0.5);
+              scores = scores.zrange(index, median, median + 1, 'WITHSCORES',
                 function(err, data) {
                   keyStats.all.min = data[1];
                 }
               );
-              scores = scores.zrange(index, max, max + 1, 'WITHSCORES',
+            }
+          });
+          cards = cards.zcard(compl, function(err, zcard) {
+            if (zcard) {
+              var median = Math.floor(zcard * 0.5);
+              scores = scores.zrange(compl, median, median + 1, 'WITHSCORES',
                 function(err, data) {
                   keyStats.all.max = data[1];
-                  keyStats.all.actual = Math.min(100, value / data[1] * 100);
                 }
               );
             }
@@ -97,17 +113,24 @@ module.exports = function(router) {
           cards = cards.zcard(index + ':' + game.championId,
             function(err, zcard) {
               if (zcard) {
-                var min = Math.floor(zcard * 0.1);
-                var max = Math.ceil(zcard * 0.9);
-                scores = scores.zrange(index, min, min + 1, 'WITHSCORES',
+                var median = Math.floor(zcard * 0.5);
+                scores = scores.zrange(index + ':' + game.championId,
+                                       median, median + 1, 'WITHSCORES',
                   function(err, data) {
                     keyStats.champ.min = data[1];
                   }
                 );
-                scores = scores.zrange(index, max, max + 1, 'WITHSCORES',
+              }
+            }
+          );
+          cards = cards.zcard(compl + ':' + game.championId,
+            function(err, zcard) {
+              if (zcard) {
+                var median = Math.floor(zcard * 0.5);
+                scores = scores.zrange(compl + ':' + game.championId,
+                                       median, median + 1, 'WITHSCORES',
                   function(err, data) {
-                    keyStats.champ.max = data[1];
-                    keyStats.champ.actual = Math.min(100, value / data[1] * 100);
+                    keyStats.champ.min = data[1];
                   }
                 );
               }
