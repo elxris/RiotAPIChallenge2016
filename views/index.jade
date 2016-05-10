@@ -66,7 +66,7 @@ body.grey-text.text-lighten-4.blue-grey.lighten-4
             .card-image
               img(src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champions[game.championId].id}}_0.jpg")
               span.card-title(style="border-bottom: thick solid {{game.stats.win ? '#c6ff00' : '#f44336'}};").
-                {{champions[game.championId].name + ' - ' + game.stats.championsKilled + '/' + game.stats.numDeaths + '/' + game.stats.assists}}
+                {{champions[game.championId].name + ' - ' + (game.stats.championsKilled||0) + '/' + (game.stats.numDeaths||0) + '/' + (game.stats.assists||0)}}
             .card-content.center-align
               div(v-if="!game.valid")
                 h3.flow-text Unfortunately this game type is not supported

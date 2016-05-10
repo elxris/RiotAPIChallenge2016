@@ -13,7 +13,7 @@ module.exports = function(router) {
     'MASTER': 'CHALLENGER',
     'CHALLENGER': 'CHALLENGER'
   };
-  router.post('/', function(req, res) {
+  router.post('/', function(req, res, next) {
     var positions = req.app.kraken.get('positions');
     var roles = req.app.kraken.get('roles');
     var redis = req.redis = new Redis();
@@ -146,7 +146,7 @@ module.exports = function(router) {
       }).finally(function() {
         _cards.end();
         _scores.end();
-      });
+      }).catch(next);
     }
   });
 
