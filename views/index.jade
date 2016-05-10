@@ -9,14 +9,14 @@ head
   link(rel="stylesheet" href="/css/app.css")
   meta(name="viewport" content="width=device-width, initial-scale=1.0")
 body.grey-text.text-lighten-4.blue-grey.lighten-4
-  #app.row.blue-grey.lighten-5(style="margin-bottom: 0;"): .row
+  #app.row.blue-grey.lighten-4(style="margin-bottom: 0;"): .row
     #sidebar.col.s12.m4.sidebar.grey.darken-4
       .container.padding-5vh.center-align: .row
         .row: .col.s12
           .row
             .col.s12.left-align.margin-1em
               label.blue-text.text-lighten-4 Region
-              select.browser-default.blue(v-model='region' debounce='999')
+              select.browser-default.grey.darken-4(v-model='region' debounce='999')
                 option(value='' disabled v-bind:selected="!region") Region
                 option(v-for="r in regions" v-bind:value='r' v-bind:selected="region === r") {{r}}
             .input-field.col.s12.margin-1em
